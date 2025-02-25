@@ -18,6 +18,7 @@ import {
 import { getComparator } from "../utils/getComparator";
 import { stableSort } from "../utils/stableSort";
 import { BookRow } from "./BookRow";
+import { LanguageChange } from "./LanguageChange";
 import { books } from "../data/books";
 
 const BookTable = () => {
@@ -39,11 +40,6 @@ const BookTable = () => {
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
-
-    const handleFilterChange = (event) => {
-        setFilter(event.target.value);
         setPage(0);
     };
 
@@ -72,7 +68,7 @@ const BookTable = () => {
     return (
         <Paper>
         <Toolbar>
-            {/* i will add components here later */}
+            <LanguageChange />
         </Toolbar>
         <TableContainer>
             <Table>
