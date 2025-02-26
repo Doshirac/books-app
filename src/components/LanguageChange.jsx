@@ -16,7 +16,7 @@ export const LanguageChange = () => {
                 className=""
             >
                 <option value="en">English</option>
-                <option value="de">Deutsch</option>
+                <option value="de">German</option>
                 <option value="pl">Polish</option>
             </select>
         </div>

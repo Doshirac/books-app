@@ -1,5 +1,9 @@
-import { base, de, en, pl, Faker } from '@faker-js/faker';
+import { Faker } from '@faker-js/faker';
+import { fakerLocales } from './fakerLocales';
 
-export const faker = new Faker({
-    locale: [en, de, pl],
-});
+export function initFaker({ localeCode, seed }) {
+    const chosenLocale = fakerLocales[localeCode];
+    const faker = new Faker({ locale: [chosenLocale, fakerLocales.en] });
+    faker.seed(seed);
+    return faker;
+}

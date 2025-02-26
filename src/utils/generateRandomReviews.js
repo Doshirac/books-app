@@ -1,5 +1,9 @@
 import { createRandomReview } from "./createRandomReview";
+import { initFaker } from "../faker";
 
-export const generateRandomReviews = (count = 2) => {
-    return Array.from({ length: count }, () => createRandomReview());
-};
+export function generateRandomReviews({ localeCode, seed, count = 2 } = {}) {
+    const faker = initFaker({ localeCode, seed });
+    const reviews = Array.from({ length: count }, () => (createRandomReview(faker)));
+
+    return reviews;
+}

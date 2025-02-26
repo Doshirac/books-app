@@ -1,6 +1,4 @@
-import { faker } from "../faker";
-
-export const createRandomReview = () => {
+export const createRandomReview = (faker) => {
     return {
       reviewer: faker.internet.displayName(),
       reviewText: faker.lorem.paragraph(),

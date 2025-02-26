@@ -1,10 +1,6 @@
-import { faker } from "../faker";
-
-let idCounter = 1;
-
-export function createRandomBook() {
+export function createRandomBook(faker, id) {
     return {
-        bookId: idCounter++,
+        bookId: id,
         ISBN: faker.commerce.isbn(),
         title: faker.book.title(),
         author: faker.book.author(),
