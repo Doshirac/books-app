@@ -1,22 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-    TableCell,
-    TableRow,
-    Box,
-    Collapse,
-    IconButton,
+  TableCell,
+  TableRow,
+  Box,
+  Collapse,
+  IconButton,
+  Typography,
 } from "@mui/material";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { generateRandomReviews } from "../utils/generateRandomReviews";
+import { generateRandomLikes } from "../utils/generateRandomLikes";
+import { FaHeart } from "react-icons/fa";
 
-export const BookRow = ({ book }) => {
-    const [open, setOpen] = useState(false);
-    const reviews = generateRandomReviews();
+export const BookRow = ({
+    book,
+    localeCode,
+    seed,
+    fraction,
+    likeFraction,
+    forceOpen = false,
+}) => {
+    const [open, setOpen] = useState(forceOpen);
+    const [userAddedLikes, setUserAddedLikes] = useState(0);
+
+    useEffect(() => {
+      if (forceOpen) {
+        setOpen(true);
+      }
+    }, [forceOpen]);
+
+    const reviews = generateRandomReviews({
+      localeCode,
+      seed: `${seed}-${book.bookId}-reviews`,
+      fraction,
+    });
+
+    const generatedLikes = generateRandomLikes({
+      seed: `${seed}-${book.bookId}-likes`,
+      fraction: likeFraction,
+    });
+    
+    const totalLikes = generatedLikes + userAddedLikes;
+
+    const handleLike = (e) => {
+      e.stopPropagation();
+      setUserAddedLikes(userAddedLikes + 1);
+    };
 
     return (
       <>
         <TableRow
+          id={`book-${book.bookId}`}
           hover
           onClick={() => setOpen(!open)}
           style={{ cursor: "pointer" }}
@@ -39,7 +74,7 @@ export const BookRow = ({ book }) => {
           <TableCell>{book.publisher}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
               <Box margin={1}>
                 <Box
@@ -70,18 +105,26 @@ export const BookRow = ({ book }) => {
                   </Box>
                 </Box>
                 <Box>
-                  <h4>Reviews</h4>
+                  <Typography variant="h6">Reviews ({reviews.length})</Typography>
                   {reviews.map((review, index) => (
-                      <Box key={index} mb={2}>
-                        <p>
-                          <strong>Reviewer:</strong> {review.reviewer}
-                        </p>
-                        <p>"{review.reviewText}"</p>
-                        <p>
-                          <strong>Rating:</strong> {review.rating}/5
-                        </p>
-                      </Box>
+                    <Box key={index} mb={2}>
+                      <Typography variant="body2">
+                        <strong>Reviewer:</strong> {review.reviewer}
+                      </Typography>
+                      <Typography variant="body2">"{review.reviewText}"</Typography>
+                      <Typography variant="body2">
+                        <strong>Rating:</strong> {review.rating}/5
+                      </Typography>
+                    </Box>
                   ))}
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
+                  <IconButton onClick={handleLike}>
+                    <FaHeart color="red" size={24} />
+                  </IconButton>
+                  <Typography variant="body2" sx={{ ml: 1 }}>
+                    {totalLikes} Likes
+                  </Typography>
                 </Box>
               </Box>
             </Collapse>

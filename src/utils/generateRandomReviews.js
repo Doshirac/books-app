@@ -1,9 +1,16 @@
-import { createRandomReview } from "./createRandomReview";
+import seedrandom from 'seedrandom';
 import { initFaker } from "../faker";
+import { createRandomReview } from "./createRandomReview";
+import { times } from "./times";
 
-export function generateRandomReviews({ localeCode, seed, count = 2 } = {}) {
+export function generateRandomReviews({ localeCode, seed, fraction = 4.7 } = {}) {
     const faker = initFaker({ localeCode, seed });
-    const reviews = Array.from({ length: count }, () => (createRandomReview(faker)));
+    const rng = seedrandom(seed.toString());
+    const addOneReview = (reviews = []) => {
+      return [...reviews, createRandomReview(faker)];
+    };
 
-    return reviews;
+    const addReviews = times(fraction, addOneReview, rng);
+
+    return addReviews([]);
 }

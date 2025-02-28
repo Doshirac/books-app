@@ -1,4 +1,4 @@
-import React from "react";
+import { IconButton, Typography } from "@mui/material";
 import { generateRandomSeed } from "../utils/generateRandomSeed";
 
 export const SeedReset = ({ seed, onSeedChange }) => {
@@ -9,12 +9,12 @@ export const SeedReset = ({ seed, onSeedChange }) => {
 
     return (
         <div style={{ marginLeft: "16px", display: "flex", alignItems: "center" }}>
-        <span>
-            <strong>Seed:</strong> {seed}
-        </span>
-        <button onClick={handleResetSeed} style={{ marginLeft: "8px" }}>
-            Reset Seed
-        </button>
+            <span>
+                <strong>Seed:</strong> {seed}
+            </span>
+        <IconButton onClick={handleResetSeed}>
+            <Typography variant="button">🔀</Typography>
+        </IconButton>
         </div>
     );
 };
