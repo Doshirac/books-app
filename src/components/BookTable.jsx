@@ -107,7 +107,7 @@ const BookTable = () => {
       { id: "bookId", label: "#" },
       { id: "ISBN", label: "ISBN" },
       { id: "title", label: t("book.title") },
-      { id: "author", label: t("book.author") },
+      { id: "authors", label: t("book.author") },
       { id: "publisher", label: t("book.publisher") },
     ];
 

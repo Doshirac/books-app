@@ -24,6 +24,10 @@ export const BookRow = ({
     const [open, setOpen] = useState(forceOpen);
     const [userAddedLikes, setUserAddedLikes] = useState(0);
 
+    const authors = Array.isArray(book.authors)
+    ? book.authors.join(", ")
+    : book.author || "Unknown";
+
     useEffect(() => {
       if (forceOpen) {
         setOpen(true);
@@ -70,7 +74,7 @@ export const BookRow = ({
           <TableCell>{book.bookId}</TableCell>
           <TableCell>{book.ISBN}</TableCell>
           <TableCell>{book.title}</TableCell>
-          <TableCell>{book.author}</TableCell>
+          <TableCell>{authors}</TableCell>
           <TableCell>{book.publisher}</TableCell>
         </TableRow>
         <TableRow>
@@ -84,9 +88,11 @@ export const BookRow = ({
                       backgroundImage: `url(https://picsum.photos/seed/${book.bookId}/200/300)`,
                     }}
                   >
-                    <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white p-1 text-center rounded-b">
+                    <div className="absolute top-0 left-0 w-full bg-black bg-opacity-50 text-white p-1 text-center rounded-b font-bold text-xl">
                       <div>{book.title}</div>
-                      <div>{book.author}</div>
+                    </div>
+                    <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white p-1 text-center rounded-b font-extralight">
+                      <div>{authors}</div>
                     </div>
                   </div>
                   <div className="flex items-center mt-2">
