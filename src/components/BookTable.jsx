@@ -102,12 +102,23 @@ const BookTable = () => {
 
     const handleGoToSelected = () => {
       if (!selectedBook) return;
-      setTimeout(() => {
+      const index = sortedBooks.findIndex(
+        (book) => book.bookId === selectedBook.bookId
+      );
+      if (index >= itemsToShow) {
+        setItemsToShow(index + 1);
+        setTimeout(() => {
+          const el = document.getElementById(`book-${selectedBook.bookId}`);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }, 100);
+      } else {
         const el = document.getElementById(`book-${selectedBook.bookId}`);
         if (el) {
           el.scrollIntoView({ behavior: "smooth", block: "center" });
         }
-      }, 200);
+      }
     };
 
     useEffect(() => {
@@ -115,7 +126,9 @@ const BookTable = () => {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && itemsToShow < sortedBooks.length) {
-            setItemsToShow((prev) => Math.min(prev + INCREMENT, sortedBooks.length));
+            setItemsToShow((prev) =>
+              Math.min(prev + INCREMENT, sortedBooks.length)
+            );
           }
         });
       });
@@ -197,9 +210,7 @@ const BookTable = () => {
                     seed={seed}
                     fraction={reviewFraction}
                     likeFraction={likeFraction}
-                    forceOpen={
-                      selectedBook && book.bookId === selectedBook.bookId
-                    }
+                    forceOpen={selectedBook && book.bookId === selectedBook.bookId}
                   />
                 </React.Fragment>
               ))}
