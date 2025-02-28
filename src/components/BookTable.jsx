@@ -25,6 +25,7 @@ import { SeedReset } from "./SeedReset";
 import { selectRandomBook } from "../utils/selectRandomBook";
 
 const BOOK_COUNT = 100;
+const LIKES_PER_REVIEW = 4;
 
 const BookTable = () => {
     const { t, i18n } = useTranslation();
@@ -35,8 +36,9 @@ const BookTable = () => {
     const [books, setBooks] = useState([]);
     const [seed, setSeed] = useState(42);
     const [reviewFraction, setReviewFraction] = useState(4.7);
-    const [likeFraction, setLikeFraction] = useState(50);
+    const [likeFraction, setLikeFraction] = useState(19);
     const [selectedBook, setSelectedBook] = useState(null);
+    const [lastUpdated, setLastUpdated] = useState(null);
     const containerRef = useRef(null);
 
     useEffect(() => {
@@ -55,6 +57,19 @@ const BookTable = () => {
       }
     }, [books, seed, i18n.language]);
 
+    useEffect(() => {
+      if (lastUpdated === 'likes') {
+        const calculatedReviews = parseFloat((likeFraction / LIKES_PER_REVIEW).toFixed(1));
+        setReviewFraction(calculatedReviews);
+      } else if (lastUpdated === 'reviews') {
+        const calculatedLikes = Math.round(reviewFraction * LIKES_PER_REVIEW);
+        setLikeFraction(calculatedLikes);
+      }
+      if (lastUpdated) {
+        setLastUpdated(null);
+      }
+    }, [lastUpdated, likeFraction, reviewFraction]);
+
     const handleRequestSort = (event, property) => {
       const isAsc = orderBy === property && order === "asc";
       setOrder(isAsc ? "desc" : "asc");
@@ -68,6 +83,18 @@ const BookTable = () => {
     const handleChangeRowsPerPage = (event) => {
       setRowsPerPage(parseInt(event.target.value, 10));
       setPage(0);
+    };
+
+    const handleLikeFractionChange = (e) => {
+      const newValue = parseFloat(e.target.value);
+      setLikeFraction(newValue);
+      setLastUpdated('likes');
+    };
+
+    const handleReviewFractionChange = (e) => {
+      const newValue = parseFloat(e.target.value);
+      setReviewFraction(newValue);
+      setLastUpdated('reviews');
     };
 
     const sortedBooks = stableSort(books, getComparator(order, orderBy));
@@ -117,9 +144,7 @@ const BookTable = () => {
                 variant="outlined"
                 size="small"
                 value={likeFraction}
-                onChange={(e) =>
-                  setLikeFraction(parseFloat(e.target.value))
-                }
+                onChange={handleLikeFractionChange}
                 sx={{ width: 100 }}
               />
             </Box>
@@ -130,9 +155,7 @@ const BookTable = () => {
                 variant="outlined"
                 size="small"
                 value={reviewFraction}
-                onChange={(e) =>
-                  setReviewFraction(parseFloat(e.target.value))
-                }
+                onChange={handleReviewFractionChange}
                 sx={{ width: 100 }}
               />
             </Box>
