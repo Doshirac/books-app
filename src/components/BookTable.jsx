@@ -31,7 +31,7 @@ const BookTable = () => {
     const [order, setOrder] = useState("asc");
     const [orderBy, setOrderBy] = useState("title");
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
     const [books, setBooks] = useState([]);
     const [seed, setSeed] = useState(42);
     const [reviewFraction, setReviewFraction] = useState(4.7);
@@ -105,7 +105,7 @@ const BookTable = () => {
     };
 
     return (
-      <Paper className="m-auto p-4 rounded shadow w-[80vw] bg-whiteborder border-gray-300" ref={containerRef}>
+      <Paper className="m-auto p-4 rounded shadow w-[80vw] bg-whiteborder" ref={containerRef}>
         <Toolbar className="bg-gray-50 rounded-t">
           <Box className="flex items-center w-full gap-2">
             <LanguageChange />

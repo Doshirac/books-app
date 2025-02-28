@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {
-  TableCell,
-  TableRow,
-  Box,
-  Collapse,
-  IconButton,
-  Typography,
+    TableCell,
+    TableRow,
+    Collapse,
+    IconButton,
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -40,7 +38,7 @@ export const BookRow = ({
       seed: `${seed}-${book.bookId}-likes`,
       fraction: likeFraction,
     });
-    
+
     const totalLikes = generatedLikes + userAddedLikes;
 
     const handleLike = (e) => {
@@ -76,57 +74,43 @@ export const BookRow = ({
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
-              <Box margin={1}>
-                <Box
-                  sx={{
-                    position: "relative",
-                    width: 200,
-                    height: 300,
-                    backgroundImage: `url(https://picsum.photos/seed/${book.bookId}/200/300)`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    marginBottom: 2,
-                  }}
-                >
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: 0,
-                      width: "100%",
-                      backgroundColor: "rgba(0, 0, 0, 0.5)",
-                      color: "white",
-                      padding: "4px",
-                      textAlign: "center",
+              <div className="m-4 flex space-x-4">
+                <div className="flex flex-col">
+                  <div
+                    className="relative w-48 h-72 mb-2 bg-cover bg-center rounded shadow-lg"
+                    style={{
+                      backgroundImage: `url(https://picsum.photos/seed/${book.bookId}/200/300)`,
                     }}
                   >
-                    <div>{book.title}</div>
-                    <div>{book.author}</div>
-                  </Box>
-                </Box>
-                <Box>
-                  <Typography variant="h6">Reviews ({reviews.length})</Typography>
+                    <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white p-1 text-center rounded-b">
+                      <div>{book.title}</div>
+                      <div>{book.author}</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center mt-2">
+                    <button onClick={handleLike} className="focus:outline-none">
+                      <FaHeart className="text-red-500" size={24} />
+                    </button>
+                    <span className="ml-1 text-sm">{totalLikes} Likes</span>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <h6 className="text-lg font-semibold mb-2">
+                    Reviews ({reviews.length})
+                  </h6>
                   {reviews.map((review, index) => (
-                    <Box key={index} mb={2}>
-                      <Typography variant="body2">
+                    <div key={index} className="mb-4 p-3 bg-gray-50 rounded shadow">
+                      <p className="text-sm">
                         <strong>Reviewer:</strong> {review.reviewer}
-                      </Typography>
-                      <Typography variant="body2">"{review.reviewText}"</Typography>
-                      <Typography variant="body2">
+                      </p>
+                      <p className="text-sm italic">"{review.reviewText}"</p>
+                      <p className="text-sm">
                         <strong>Rating:</strong> {review.rating}/5
-                      </Typography>
-                    </Box>
+                      </p>
+                    </div>
                   ))}
-                </Box>
-                <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-                  <IconButton onClick={handleLike}>
-                    <FaHeart color="red" size={24} />
-                  </IconButton>
-                  <Typography variant="body2" sx={{ ml: 1 }}>
-                    {totalLikes} Likes
-                  </Typography>
-                </Box>
-              </Box>
+                </div>
+              </div>
             </Collapse>
           </TableCell>
         </TableRow>
