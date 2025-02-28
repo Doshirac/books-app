@@ -13,15 +13,14 @@ export const SeedReset = ({ seed, onSeedChange }) => {
 
     return (
         <Box
-        sx={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 1,
-            border: "1px solid #e0e0e0",
-            borderRadius: 1,
-            px: 1.5,
-            py: 0.5,
-        }}
+            sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 1,
+                border: "1px solid #e0e0e0",
+                borderRadius: 1,
+                px: 1.5,
+            }}
         >
             <Typography variant="caption" sx={{ color: "text.secondary" }}>
                 Seed:
@@ -33,7 +32,7 @@ export const SeedReset = ({ seed, onSeedChange }) => {
                 value={seed}
                 onChange={handleSeedChange}
                 sx={{
-                    width: 100,
+                    width: 90,
                     "& .MuiOutlinedInput-root": {
                         "& fieldset": {
                             border: "none",

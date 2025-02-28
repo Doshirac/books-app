@@ -7,7 +7,6 @@ import {
     TableHead,
     TableRow,
     Toolbar,
-    Checkbox,
     Paper,
     TableSortLabel,
     TablePagination,
@@ -106,20 +105,14 @@ const BookTable = () => {
     };
 
     return (
-      <Paper ref={containerRef}>
-        <Toolbar
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+      <Paper className="m-auto p-4 rounded shadow w-[80vw] bg-whiteborder border-gray-300" ref={containerRef}>
+        <Toolbar className="bg-gray-50 rounded-t">
+          <Box className="flex items-center w-full gap-2">
             <LanguageChange />
             <SeedReset seed={seed} onSeedChange={setSeed} />
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Box className="flex items-center">
               <TextField
-                label="Likes Fraction"
+                label="Likes"
                 type="number"
                 variant="outlined"
                 size="small"
@@ -130,9 +123,9 @@ const BookTable = () => {
                 sx={{ width: 100 }}
               />
             </Box>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Box className="flex items-center">
               <TextField
-                label="Review Fraction"
+                label="Reviews"
                 type="number"
                 variant="outlined"
                 size="small"
@@ -155,7 +148,7 @@ const BookTable = () => {
             <TableHead>
               <TableRow>
                 <TableCell padding="checkbox">
-                  <Checkbox />
+                  <></>
                 </TableCell>
                 {headCells.map((headCell) => (
                   <TableCell
