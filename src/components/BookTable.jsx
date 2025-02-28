@@ -110,7 +110,6 @@ const BookTable = () => {
       }, 200);
     };
 
-    // Set up infinite scrolling with IntersectionObserver.
     useEffect(() => {
       if (!bottomBoundaryRef.current) return;
       const observer = new IntersectionObserver((entries) => {
