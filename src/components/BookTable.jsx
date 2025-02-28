@@ -9,7 +9,6 @@ import {
     Toolbar,
     Paper,
     TableSortLabel,
-    TablePagination,
     Tooltip,
     Box,
     TextField,
@@ -26,20 +25,21 @@ import { selectRandomBook } from "../utils/selectRandomBook";
 
 const BOOK_COUNT = 100;
 const LIKES_PER_REVIEW = 4;
+const INCREMENT = 5;
 
 const BookTable = () => {
     const { t, i18n } = useTranslation();
     const [order, setOrder] = useState("asc");
     const [orderBy, setOrderBy] = useState("title");
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
     const [books, setBooks] = useState([]);
     const [seed, setSeed] = useState(42);
     const [reviewFraction, setReviewFraction] = useState(4.7);
     const [likeFraction, setLikeFraction] = useState(19);
     const [selectedBook, setSelectedBook] = useState(null);
     const [lastUpdated, setLastUpdated] = useState(null);
+    const [itemsToShow, setItemsToShow] = useState(INCREMENT);
     const containerRef = useRef(null);
+    const bottomBoundaryRef = useRef(null);
 
     useEffect(() => {
       const newBooks = createBooks({
@@ -48,6 +48,7 @@ const BookTable = () => {
         count: BOOK_COUNT,
       });
       setBooks(newBooks);
+      setItemsToShow(INCREMENT);
     }, [i18n.language, seed]);
 
     useEffect(() => {
@@ -58,10 +59,10 @@ const BookTable = () => {
     }, [books, seed, i18n.language]);
 
     useEffect(() => {
-      if (lastUpdated === 'likes') {
+      if (lastUpdated === "likes") {
         const calculatedReviews = parseFloat((likeFraction / LIKES_PER_REVIEW).toFixed(1));
         setReviewFraction(calculatedReviews);
-      } else if (lastUpdated === 'reviews') {
+      } else if (lastUpdated === "reviews") {
         const calculatedLikes = Math.round(reviewFraction * LIKES_PER_REVIEW);
         setLikeFraction(calculatedLikes);
       }
@@ -76,32 +77,20 @@ const BookTable = () => {
       setOrderBy(property);
     };
 
-    const handleChangePage = (event, newPage) => {
-      setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(parseInt(event.target.value, 10));
-      setPage(0);
-    };
-
     const handleLikeFractionChange = (e) => {
       const newValue = parseFloat(e.target.value);
       setLikeFraction(newValue);
-      setLastUpdated('likes');
+      setLastUpdated("likes");
     };
 
     const handleReviewFractionChange = (e) => {
       const newValue = parseFloat(e.target.value);
       setReviewFraction(newValue);
-      setLastUpdated('reviews');
+      setLastUpdated("reviews");
     };
 
     const sortedBooks = stableSort(books, getComparator(order, orderBy));
-    const paginatedBooks = sortedBooks.slice(
-      page * rowsPerPage,
-      page * rowsPerPage + rowsPerPage
-    );
+    const visibleBooks = sortedBooks.slice(0, itemsToShow);
 
     const headCells = [
       { id: "bookId", label: "#" },
@@ -113,16 +102,6 @@ const BookTable = () => {
 
     const handleGoToSelected = () => {
       if (!selectedBook) return;
-
-      const index = sortedBooks.findIndex(
-        (book) => book.bookId === selectedBook.bookId
-      );
-      if (index === -1) return;
-
-      const newPage = Math.floor(index / rowsPerPage);
-
-      setPage(newPage);
-
       setTimeout(() => {
         const el = document.getElementById(`book-${selectedBook.bookId}`);
         if (el) {
@@ -131,8 +110,29 @@ const BookTable = () => {
       }, 200);
     };
 
+    // Set up infinite scrolling with IntersectionObserver.
+    useEffect(() => {
+      if (!bottomBoundaryRef.current) return;
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && itemsToShow < sortedBooks.length) {
+            setItemsToShow((prev) => Math.min(prev + INCREMENT, sortedBooks.length));
+          }
+        });
+      });
+      observer.observe(bottomBoundaryRef.current);
+      return () => {
+        if (bottomBoundaryRef.current) {
+          observer.unobserve(bottomBoundaryRef.current);
+        }
+      };
+    }, [bottomBoundaryRef, itemsToShow, sortedBooks.length]);
+
     return (
-      <Paper className="m-auto p-4 rounded shadow w-[80vw] bg-whiteborder" ref={containerRef}>
+      <Paper
+        className="m-auto p-4 rounded shadow w-[80vw] bg-whiteborder"
+        ref={containerRef}
+      >
         <Toolbar className="bg-gray-50 rounded-t">
           <Box className="flex items-center w-full gap-2">
             <LanguageChange />
@@ -170,9 +170,7 @@ const BookTable = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="checkbox">
-                  <></>
-                </TableCell>
+                <TableCell padding="checkbox" />
                 {headCells.map((headCell) => (
                   <TableCell
                     key={headCell.id}
@@ -192,7 +190,7 @@ const BookTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {paginatedBooks.map((book) => (
+              {visibleBooks.map((book) => (
                 <React.Fragment key={book.bookId}>
                   <BookRow
                     book={book}
@@ -200,22 +198,16 @@ const BookTable = () => {
                     seed={seed}
                     fraction={reviewFraction}
                     likeFraction={likeFraction}
-                    forceOpen={selectedBook && book.bookId === selectedBook.bookId}
+                    forceOpen={
+                      selectedBook && book.bookId === selectedBook.bookId
+                    }
                   />
                 </React.Fragment>
               ))}
             </TableBody>
           </Table>
+          <div ref={bottomBoundaryRef} style={{ height: "20px", margin: "10px" }} />
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={books.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       </Paper>
     );
 };
