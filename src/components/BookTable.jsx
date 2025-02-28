@@ -32,7 +32,7 @@ const BookTable = () => {
     const [order, setOrder] = useState("asc");
     const [orderBy, setOrderBy] = useState("title");
     const [books, setBooks] = useState([]);
-    const [seed, setSeed] = useState(42);
+    const [seed, setSeed] = useState("42");
     const [reviewFraction, setReviewFraction] = useState(4.7);
     const [likeFraction, setLikeFraction] = useState(19);
     const [selectedBook, setSelectedBook] = useState(null);

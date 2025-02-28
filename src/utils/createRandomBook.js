@@ -1,13 +1,11 @@
 export function createRandomBook(faker, id) {
-    const numberOfAuthors = Math.floor(Math.random() * 2) + 1;
-    const authors = Array.from({ length: numberOfAuthors }, () => faker.book.author());
-  
     return {
       bookId: id,
       ISBN: faker.commerce.isbn(),
       title: faker.book.title(),
-      authors,
+      authors: faker.helpers.multiple(() => faker.book.author(), {
+        count: faker.number.int({ min: 1, max: 2 })
+      }),
       publisher: faker.book.publisher(),
     };
 }
-  
