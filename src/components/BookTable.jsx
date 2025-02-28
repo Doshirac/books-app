@@ -27,7 +27,7 @@ import { selectRandomBook } from "../utils/selectRandomBook";
 const BOOK_COUNT = 100;
 
 const BookTable = () => {
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [order, setOrder] = useState("asc");
     const [orderBy, setOrderBy] = useState("title");
     const [page, setPage] = useState(0);
@@ -79,9 +79,9 @@ const BookTable = () => {
     const headCells = [
       { id: "bookId", label: "#" },
       { id: "ISBN", label: "ISBN" },
-      { id: "title", label: "Title" },
-      { id: "author", label: "Author" },
-      { id: "publisher", label: "Publisher" },
+      { id: "title", label: t("book.title") },
+      { id: "author", label: t("book.author") },
+      { id: "publisher", label: t("book.publisher") },
     ];
 
     const handleGoToSelected = () => {
@@ -112,7 +112,7 @@ const BookTable = () => {
             <SeedReset seed={seed} onSeedChange={setSeed} />
             <Box className="flex items-center">
               <TextField
-                label="Likes"
+                label={t("book.likes")}
                 type="number"
                 variant="outlined"
                 size="small"
@@ -125,7 +125,7 @@ const BookTable = () => {
             </Box>
             <Box className="flex items-center">
               <TextField
-                label="Reviews"
+                label={t("book.reviews")}
                 type="number"
                 variant="outlined"
                 size="small"
@@ -138,7 +138,7 @@ const BookTable = () => {
             </Box>
             {selectedBook && (
               <Button variant="contained" onClick={handleGoToSelected}>
-                Go to Selected Book
+                {t("book.chooseBook")}
               </Button>
             )}
           </Box>

@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Box, Typography, Select, MenuItem } from "@mui/material";
 
 export const LanguageChange = () => {
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     return (
         <Box 
@@ -17,7 +17,7 @@ export const LanguageChange = () => {
             }}
         >
             <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                Language:
+                {t("book.language")}
             </Typography>
             <Select
                 variant="standard"

@@ -1,0 +1,14 @@
+{
+    "book": {
+        "seed": "Seed:",
+        "language": "Language:",
+        "reviews": "Reviews",
+        "likes": "Likes",
+        "chooseBook": "Go to Selected Book",
+        "title": "Title",
+        "author": "Author",
+        "publisher": "Publisher",
+        "reviewer": "Reviewer:",
+        "rating": "Rating:"
+    }
+}

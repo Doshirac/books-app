@@ -1,0 +1,14 @@
+{
+    "book": {
+        "seed": "Nasiona:",
+        "language": "Język:",
+        "reviews": "Recenzje",
+        "likes": "Lubi",
+        "chooseBook": "Przejdź do wybranej książki",
+        "title": "Tytuł",
+        "author": "Autor",
+        "publisher": "Wydawca",
+        "reviewer": "Recenzent:",
+        "rating": "Ocena:"
+    }
+}

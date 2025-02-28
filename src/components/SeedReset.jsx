@@ -1,7 +1,10 @@
 import { IconButton, Typography, Box, TextField } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { generateRandomSeed } from "../utils/generateRandomSeed";
 
 export const SeedReset = ({ seed, onSeedChange }) => {
+    const { t } = useTranslation();
+
     const handleResetSeed = () => {
         const newSeed = generateRandomSeed();
         onSeedChange(newSeed);
@@ -23,7 +26,7 @@ export const SeedReset = ({ seed, onSeedChange }) => {
             }}
         >
             <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                Seed:
+                {t("book.seed")}
             </Typography>
             <TextField
                 type="text"

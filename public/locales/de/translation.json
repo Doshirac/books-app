@@ -1,0 +1,14 @@
+{
+    "book": {
+        "seed": "Samen:",
+        "language": "Sprachlich:",
+        "reviews": "Gästebewertungen",
+        "likes": "Wie",
+        "chooseBook": "Zum ausgewählten Buch gehen",
+        "title": "Titelleiste",
+        "author": "Autor",
+        "publisher": "Herausgeber",
+        "reviewer": "Gutachter:",
+        "rating": "Bewertung:"
+    }
+}

@@ -5,6 +5,7 @@ import {
     Collapse,
     IconButton,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { generateRandomReviews } from "../utils/generateRandomReviews";
@@ -19,6 +20,7 @@ export const BookRow = ({
     likeFraction,
     forceOpen = false,
 }) => {
+    const { t } = useTranslation()
     const [open, setOpen] = useState(forceOpen);
     const [userAddedLikes, setUserAddedLikes] = useState(0);
 
@@ -91,21 +93,21 @@ export const BookRow = ({
                     <button onClick={handleLike} className="focus:outline-none">
                       <FaHeart className="text-red-500" size={24} />
                     </button>
-                    <span className="ml-1 text-sm">{totalLikes} Likes</span>
+                    <span className="ml-1 text-sm">{totalLikes} {t("book.likes")}</span>
                   </div>
                 </div>
                 <div className="flex-1">
                   <h6 className="text-lg font-semibold mb-2">
-                    Reviews ({reviews.length})
+                    {t("book.reviews")} ({reviews.length})
                   </h6>
                   {reviews.map((review, index) => (
                     <div key={index} className="mb-4 p-3 bg-gray-50 rounded shadow">
                       <p className="text-sm">
-                        <strong>Reviewer:</strong> {review.reviewer}
+                        <strong>{t("book.reviewer")}</strong> {review.reviewer}
                       </p>
                       <p className="text-sm italic">"{review.reviewText}"</p>
                       <p className="text-sm">
-                        <strong>Rating:</strong> {review.rating}/5
+                        <strong>{t("book.rating")}</strong> {review.rating}/5
                       </p>
                     </div>
                   ))}
